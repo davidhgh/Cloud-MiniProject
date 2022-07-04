@@ -4,32 +4,37 @@
 https://sitsingaporetechedu-my.sharepoint.com/:f:/g/personal/2000939_sit_singaporetech_edu_sg/EgwVZEEBOx5LkO14HlI1oZgBZQy9Xpc-h2wj7yeg3hOpfw?e=kG9XMJ
 
 ## Configuration for images
-- SSH login for both images
-user: rpi
-password: rpinas
-- main
-hostname: david-rpi
-Static IP: 192.168.1.100
-- nasbackup
-hostname: ken-rpi
-Static IP: 192.168.1.101
+1. SSH login for both images
+    - user: rpi
+    - password: rpinas
+2. main
+    - Description: Main NAS storage device. Functions as a home server to run docker containers, e.g. Plex Media Server.
+    - Hostname: main
+    - Static IP: 192.168.1.100
+3. backup
+    - Description: Backup NAS storage device, mirrors files of shared drive on main with rsync as a cronjob
+    - Hostname: backup
+    - Static IP: 192.168.1.101
 
-## Web GUIs
+## Web GUIs and credentials
 1. OpenMediaVault (OMV)
-Accessed by: [IP Address of host]
-Credentials
-    - Username: admin
-    - Password: openmediavault
+    - Description: NAS software
+    - Accessed by: [IP Address of host]
+    - Credentials
+        * Username: admin
+        * Password: openmediavault
 2. Portainer
-Accessed by: [IP Address of host]:9000
-Credentials
-    - Username: admin
-    - Password: raspberrypinas
+    - Description: Container management utility
+    - Accessed by: [IP Address of host]:9000
+    - Credentials
+        * Username: admin
+        * Password: raspberrypinas
 3. Plex Media Server (Installed only main RPI)
-Accessed by: 192.168.1.100:32400/web
-Credentials (Login by email, not Google/Facebook etc)
-    - Email: webscraperoop@gmail.com
-    - Password: mmE3F3mUwc88Bhg
+    - Description: Netflix but streaming with your own content. Reads files from NAS mounted as docker volumes.
+    - Accessed by: 192.168.1.100:32400/web
+    - Credentials (Login by email, not Google/Facebook etc)
+        - Email: webscraperoop@gmail.com
+        - Password: mmE3F3mUwc88Bhg
 
 ## File Structure of shared drive
 plex > config, movies, tv, music, cat-videos
@@ -38,18 +43,18 @@ plex > config, movies, tv, music, cat-videos
 */10 * * * * rsync -zaP -e ssh [REPLACE WITH ABSOLUTE PATH OF YOUR MAIN SHARED DRIVE]/plex rpi@192.168.1.101:[REPLACE WITH ABSOLUTE PATH OF YOUR NASBACKUP SHARED DRIVE] > rsync_logs.txt
 
 ## Steps to setup
-1. Image 2 SD cards with the images using Raspberry Pi Imager, 1 for main and 1 for nasbackup
-2. Power on both Raspberry Pi and connect via ethernet
-3. SSH into main Raspberry Pi with hostname or IP and run sudo docker ps. Verify that portainer and plex containers are running
-4. SSH into nasbackup with hostname or IP
+1. Image 2 SD cards with the images using RPI Imager, 1 for main and 1 for backup
+2. Power on both RPI and connect via ethernet
+3. SSH into main RPI with hostname or IP and run sudo docker ps. Verify that portainer and plex containers are running
+4. SSH into backup RPI with hostname or IP
 5. Plug in external drive into both Raspberry Pi and mount
 6. Open OMV web gui for both Raspberry Pi and login as admin
-<<BELOW STEPS ARE ALL SUMMARIZED>>
+* [BELOW STEPS ARE ALL SUMMARIZED]
 7. Setup external drives for both Raspberry Pi as shared drives (Setup file system, create share, enable SMB/CIFS, map drives on windows, create plex directories on external drive refer to docker compose file)
 8. Get absolute path of shared drive from Storage, update paths in:
-* docker-compose.yaml file
-* rsync command in crontab -e
-This ensures the plex media server volumes are mounted correctly and files in the NAS can be displayed on the plex media server's web gui
+    * docker-compose.yaml file
+    * rsync command in crontab -e
+    * This ensures the plex media server volumes are mounted correctly and files in the NAS can be displayed on the plex media server's web gui
 9. On the main RPI, run crontab -e. If there is an existing cronjob, remove it.
 10. Edit the paths in the cronjob command above with the absolute paths of the shared drives and paste it in the crontab and save it. (Can verify if created with sudo nano /var/spool/cron/crontabs/rpi)
 11. Open Portainer on the browser for the main Raspberry Pi
