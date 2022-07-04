@@ -36,26 +36,34 @@ https://sitsingaporetechedu-my.sharepoint.com/:f:/g/personal/2000939_sit_singapo
         - Email: webscraperoop@gmail.com
         - Password: mmE3F3mUwc88Bhg
 
-## File Structure of shared drive
-plex > config, movies, tv, music, cat-videos
+## Folder Structure of shared drive
+* plex
+    * config
+    * movies
+    * tv
+    * music
+    * cat-videos
 
 ## Cronjob for rsync to mirror drives every 10 minutes (Can be adjusted)
-*/10 * * * * rsync -zaP -e ssh [REPLACE WITH ABSOLUTE PATH OF YOUR MAIN SHARED DRIVE]/plex rpi@192.168.1.101:[REPLACE WITH ABSOLUTE PATH OF YOUR NASBACKUP SHARED DRIVE] > rsync_logs.txt
+*/10 * * * * rsync -zaP -e ssh --delete [REPLACE WITH ABSOLUTE PATH OF YOUR MAIN SHARED DRIVE]/plex rpi@192.168.1.101:[REPLACE WITH ABSOLUTE PATH OF YOUR NASBACKUP SHARED DRIVE] > rsync_logs.txt
 
 ## Steps to setup
 1. Image 2 SD cards with the images using RPI Imager, 1 for main and 1 for backup
 2. Power on both RPI and connect via ethernet
-3. SSH into main RPI with hostname or IP and run sudo docker ps. Verify that portainer and plex containers are running
-4. SSH into backup RPI with hostname or IP
-5. Plug in external drive into both Raspberry Pi and mount
-6. Open OMV web gui for both Raspberry Pi and login as admin
-* [BELOW STEPS ARE ALL SUMMARIZED]
-7. Setup external drives for both Raspberry Pi as shared drives (Setup file system, create share, enable SMB/CIFS, map drives on windows, create plex directories on external drive refer to docker compose file)
-8. Get absolute path of shared drive from Storage, update paths in:
-    * docker-compose.yaml file
-    * rsync command in crontab -e
-    * This ensures the plex media server volumes are mounted correctly and files in the NAS can be displayed on the plex media server's web gui
-9. On the main RPI, run crontab -e. If there is an existing cronjob, remove it.
+3. SSH into both RPI with credentials above.
+4. Plug in external drive into both Raspberry Pi and mount
+5. Open OMV web gui for both Raspberry Pi and login as admin
+6. Setup external drives for both Raspberry Pi as shared drives:
+    * Setup file system under "File Systems" in OMV. Click the circular plus button to create as ext4 file system.
+    * Create share of the created file system under "Shared Folders". Click the circular plus button to create a shared folder with "Everyone: read/write" permissions. 
+    * Add your shared folder as an SMB share under Services > SMB/CIFS and set public to "Guests only".
+    * Map the created drive on windows, This PC > Map Network Drive. You may have to login with your SSH credentials.
+7. Get absolute path of shared drive from Storage > Shared Folders on OMV, update paths in:
+    * docker-compose.yaml file: To mount NAS directory so files can be displayed in Plex Media Server.
+    * rsync command in crontab -e: Ensure files are mirrored properly based on a set schedule.
+8. On both external drives, create directories for Plex Media Server following the folder structure above.
+9. Run chmod -R 777 [Absolute path of shared drive]. This let us modify subdirectories in our shared drive which is not possible with the existing permissions.
+* Steps below for testing portainer, plex are not done yet!
 10. Edit the paths in the cronjob command above with the absolute paths of the shared drives and paste it in the crontab and save it. (Can verify if created with sudo nano /var/spool/cron/crontabs/rpi)
 11. Open Portainer on the browser for the main Raspberry Pi
 12. Create a stack with the docker compose file with the updated absolute paths to create the volumes
