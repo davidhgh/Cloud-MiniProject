@@ -62,7 +62,7 @@ https://sitsingaporetechedu-my.sharepoint.com/:f:/g/personal/2000939_sit_singapo
     * docker-compose.yaml file: To mount NAS directory so files can be displayed in Plex Media Server.
     * rsync command in crontab -e: Ensure files are mirrored properly based on a set schedule.
 8. On both external drives, create directories for Plex Media Server following the folder structure above.
-9. Run chmod -R 777 [Absolute path of shared drive]. This let us modify subdirectories in our shared drive which is not possible with the existing permissions.
+9. Run chmod -R 777 [Absolute path of shared drive]. This lets us modify subdirectories in our shared drive which is not possible with the existing permissions.
 * Steps below for testing portainer, plex are not done yet!
 10. Edit the paths in the cronjob command above with the absolute paths of the shared drives and paste it in the crontab and save it. (Can verify if created with sudo nano /var/spool/cron/crontabs/rpi)
 11. Open Portainer on the browser for the main Raspberry Pi
