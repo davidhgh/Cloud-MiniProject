@@ -1,0 +1,31 @@
+# Paste in Portainer of main RPI and create a stack (192.168.1.100:9000)
+# PRE-REQUISITE
+# - Make sure you have already configured a shared drive on OMV for 192.168.1.100
+# - Copy absolute path of shared drive from OMV and paste into ABSOLUTE_PATH env variable when creating stack
+---
+version: "2.1"
+services:
+  plex:
+    image: ghcr.io/linuxserver/plex:arm32v7-latest 
+    privileged: true
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=100
+      - VERSION=docker
+      - TZ=Asia/Singapore
+      - PLEX_CLAIM=claim-U8ckza25dYYyK7_zFCQq
+    volumes:
+      # - /path-on-host-device: /path-in-container
+      # - /srv/dev-disk-by-uuid-87a6310a-1c75-4c36-945e-308100da5de4/RPINAS/plex/config:/config
+      # - /srv/dev-disk-by-uuid-87a6310a-1c75-4c36-945e-308100da5de4/RPINAS/plex/tv:/tv
+      # - /srv/dev-disk-by-uuid-87a6310a-1c75-4c36-945e-308100da5de4/RPINAS/plex/movies:/movies
+      # - /srv/dev-disk-by-uuid-87a6310a-1c75-4c36-945e-308100da5de4/RPINAS/plex/cat-videos:/cat-videos
+      # - /srv/dev-disk-by-uuid-87a6310a-1c75-4c36-945e-308100da5de4/RPINAS/plex/music:/music
+      - ${ABSOLUTE_PATH}/plex/config:/config
+      - ${ABSOLUTE_PATH}/plex/tv:/tv
+      - ${ABSOLUTE_PATH}/plex/movies:/movies
+      - ${ABSOLUTE_PATH}/plex/cat-videos:/cat-videos
+      - ${ABSOLUTE_PATH}/plex/music:/music
+    restart: unless-stopped
