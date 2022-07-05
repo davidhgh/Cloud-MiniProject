@@ -1,0 +1,25 @@
+rough changelog
+
+Initial Versions (030722)
+- main-030722
+- nasbackup-030722
+
+040722
+- main-040722: 
+1. Remove Yacht container and files, added gateway of eth0
+- No changes made to backup
+
+040722v2
+- main-040722v2: 
+1. OMV Interfaces updated, only eth0 static IP enabled, no wlan0
+2. Changed hostname from david-rpi to main
+- backup-040722v2: 
+1. OMV Interfaces updated, only eth0 static IP enabled, no wlan0
+2. Changed hostname from ken-rpi to backup
+
+050722
+- Both
+1. Installed updates on OMV
+2. Enabled all widgets for OMV homescreen
+3. Enabled S.M.A.R.T in OMV Storage section
+4. Added Shared Drive absolute path as environment variable to create stack with Docker Compose on Portainer

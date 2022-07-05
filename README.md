@@ -35,6 +35,9 @@ https://sitsingaporetechedu-my.sharepoint.com/:f:/g/personal/2000939_sit_singapo
     - Credentials (Login by email, not Google/Facebook etc)
         - Email: webscraperoop@gmail.com
         - Password: mmE3F3mUwc88Bhg
+4. LibreOffice (Installed only main RPI)
+    - Description: Open Source MS Office
+    - Accessed by: 192.168.1.100:3000
 
 ## Folder Structure of shared drive
 * plex
@@ -43,6 +46,11 @@ https://sitsingaporetechedu-my.sharepoint.com/:f:/g/personal/2000939_sit_singapo
     * tv
     * music
     * cat-videos
+* libreoffice
+    * config
+    * doc
+    * ppt
+    * excel
 
 ## Cronjob for rsync to mirror drives every 10 minutes (Can be adjusted)
 */10 * * * * rsync -zaP -e ssh --delete [REPLACE WITH ABSOLUTE PATH OF YOUR MAIN SHARED DRIVE]/plex rpi@192.168.1.101:[REPLACE WITH ABSOLUTE PATH OF YOUR NASBACKUP SHARED DRIVE] > rsync_logs.txt
