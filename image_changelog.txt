@@ -18,8 +18,15 @@ Initial Versions (030722)
 2. Changed hostname from ken-rpi to backup
 
 050722
-- Both
+- Both:
 1. Installed updates on OMV
 2. Enabled all widgets for OMV homescreen
 3. Enabled S.M.A.R.T in OMV Storage section
 4. Added Shared Drive absolute path as environment variable to create stack with Docker Compose on Portainer
+
+060722
+- Both:
+1. Removed shared drive and file system of thumb drive from OMV
+
+- main-060722 (Final?)
+1. Added bashscript containing rsync command. This will be run as a cronjob (Somehow --delete flag keeps getting delete when cronjob runs the command)

@@ -15,7 +15,7 @@ services:
       - PGID=100
       - VERSION=docker
       - TZ=Asia/Singapore
-      - PLEX_CLAIM=claim-U8ckza25dYYyK7_zFCQq
+      - PLEX_CLAIM=#optional
     volumes:
       - ${ABSOLUTE_PATH}/plex/config:/config
       - ${ABSOLUTE_PATH}/plex/tv:/tv
@@ -27,7 +27,7 @@ services:
   libreoffice:
     image: lscr.io/linuxserver/libreoffice:latest
     container_name: libreoffice
-    network_mode: host
+    network_mode: host   
     environment:
       - PUID=1000
       - PGID=1000
