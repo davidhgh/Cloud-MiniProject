@@ -30,3 +30,8 @@ Initial Versions (030722)
 
 - main-060722 (Final?)
 1. Added bashscript containing rsync command. This will be run as a cronjob (Somehow --delete flag keeps getting delete when cronjob runs the command)
+
+080722 (DEADLINE)
+- main-final:
+1. Fixed weird issue with old cronjob executing the old rsync command directly instead of the bashscript
+2. Changed description of bashscript
